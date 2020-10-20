@@ -6,12 +6,13 @@
 using namespace std;
 
 void reorderList(ListNode* head) {
-	if (head == nullptr || head->next == nullptr)
+	if (head == nullptr || head->next == nullptr || head->next->next == nullptr)
 		return;
 	int len = 0;
-	ListNode* cur = head;
+	ListNode* cur = head, * tail = nullptr;
 	while (cur) {
 		len++;
+		tail = cur;
 		cur = cur->next;
 	}
 
@@ -19,7 +20,7 @@ void reorderList(ListNode* head) {
 
 	cur = head;
 	int index = 0;
-	ListNode* halfHead = nullptr;
+	ListNode* halfHead;
 	while (cur)
 	{
 		if (index++ == half) {
@@ -30,8 +31,16 @@ void reorderList(ListNode* head) {
 		cur = cur->next;
 	}
 
+	cur = halfHead;
+	while (cur != tail) {
+		ListNode* tmp = tail->next;
+		tail->next = cur;
+		cur = cur->next;
+		tail->next->next = tmp;
+	}
+
 	cur = head;
-	ListNode* hcur = halfHead;
+	ListNode* hcur = tail;
 	int over = len % 2 == 1 ? half : half - 1;
 	for(int i = 0; i < over; i++)
 	{
@@ -59,9 +68,9 @@ int main()
 	ListNode l7(7, &l6);
 	ListNode l8(8, &l7);
 
-	reorderList(&l8);
+	reorderList(&l7);
 
-	ListNode* cur = &l8;
+	ListNode* cur = &l7;
 	while (cur) {
 		cout << cur->val << endl;
 		cur = cur->next;
