@@ -6,40 +6,31 @@
 using namespace std;
 
 ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
-	if (not l1 and not l2)
-		return new ListNode(0);
-	else if (not l1)
-		return l2;
-	else if (not l2)
-		return l1;
-	else {
-		int val = l1->val + l2->val;
-		int up = (int)(val / 10);
-		int left = val % 10;
-		ListNode* head = new ListNode(left);
-		ListNode* cur = head;
-		while (l1->next && l2->next) {
-			val = l1->next->val + l2->next->val + up;
-			up = (int)(val / 10);
-			left = val % 10;
-			ListNode* node = new ListNode(left);
-			cur->next = node;
-			cur = node;
-			l1 = l1->next;
-			l2 = l2->next;
+	ListNode* c = new ListNode();
+	ListNode* ans = c;
+	ListNode* a = l1, * b = l2;
+	int d = 0;
+	while (true) {
+		int aval = 0, bval = 0;
+		if (a != nullptr) {
+			aval = a->val;
+			a = a->next;
 		}
-		ListNode* tail = l1->next ? l1->next : l2->next;
-		while (tail) {
-			val = tail->val + up;
-			up = (int)(val / 10);
-			left = val % 10;
-			ListNode* node = new ListNode(left);
-			cur->next = node;
-			cur = node;
-			tail = tail->next;
+		if (b != nullptr) {
+			bval = b->val;
+			b = b->next;
 		}
-		return head;
+		c->val = aval + bval + d;
+		d = 0;
+		if (c->val >= 10) {
+			c->val -= 10;
+			d = 1;
+		}
+		if (a == nullptr && b == nullptr && d == 0) break;
+		c->next = new ListNode();
+		c = c->next;
 	}
+	return ans;
 }
 
 int main()
