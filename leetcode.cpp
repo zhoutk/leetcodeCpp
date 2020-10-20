@@ -6,71 +6,50 @@
 using namespace std;
 
 void reorderList(ListNode* head) {
-	if (head == nullptr || head->next == nullptr || head->next->next == nullptr)
+	if (not head or not head->next)
 		return;
-	int len = 0;
-	ListNode* cur = head, * tail = nullptr;
-	while (cur) {
-		len++;
-		tail = cur;
-		cur = cur->next;
+	ListNode* l = head;
+	ListNode* r = head;
+	ListNode* mid = head;
+
+	while (r->next and r->next->next) {
+		l = l->next;
+		r = r->next->next;
 	}
 
-	int half = (int)(len / 2);
-
-	cur = head;
-	int index = 0;
-	ListNode* halfHead;
-	while (cur)
-	{
-		if (index++ == half) {
-			halfHead = cur->next;
-			cur->next = nullptr;
-			break;
-		}
-		cur = cur->next;
+	r = l->next;
+	while (r->next) {				//后半部分链表逆序
+		mid = r->next;
+		r->next = mid->next;
+		mid->next = l->next;
+		l->next = mid;
 	}
 
-	cur = halfHead;
-	while (cur != tail) {
-		ListNode* tmp = tail->next;
-		tail->next = cur;
-		cur = cur->next;
-		tail->next->next = tmp;
+	mid = l;
+	l = head;
+	while (l != mid) {
+		r = mid->next;
+		mid->next = r->next;
+		r->next = l->next;
+		l->next = r;
+		l = r->next;
 	}
-
-	cur = head;
-	ListNode* hcur = tail;
-	int over = len % 2 == 1 ? half : half - 1;
-	for(int i = 0; i < over; i++)
-	{
-		ListNode* tmp = cur->next;
-		cur->next = hcur;
-		hcur = hcur->next;
-		cur->next->next = tmp;
-		//if (cur->next->next)
-		{
-			cur = cur->next->next;
-		}
-	}
-
-	cout << "List length : " << len << endl;
 }
 
 int main()
 {
-	ListNode l1(1);
-	ListNode l2(2, &l1);
-	ListNode l3(3, &l2);
-	ListNode l4(4, &l3);
-	ListNode l5(5, &l4);
-	ListNode l6(6, &l5);
-	ListNode l7(7, &l6);
-	ListNode l8(8, &l7);
+	ListNode l1(8);
+	ListNode l2(7, &l1);
+	ListNode l3(6, &l2);
+	ListNode l4(5, &l3);
+	ListNode l5(4, &l4);
+	ListNode l6(3, &l5);
+	ListNode l7(2, &l6);
+	ListNode l8(1, &l7);
 
-	reorderList(&l7);
+	reorderList(&l8);
 
-	ListNode* cur = &l7;
+	ListNode* cur = &l8;
 	while (cur) {
 		cout << cur->val << endl;
 		cur = cur->next;
