@@ -5,51 +5,58 @@
 
 using namespace std;
 
-void reorderList(ListNode* head) {
-	if (not head or not head->next)
-		return;
-	ListNode* l = head;
-	ListNode* r = head;
-	ListNode* mid = head;
-
-	while (r->next and r->next->next) {
-		l = l->next;
-		r = r->next->next;
-	}
-
-	r = l->next;
-	while (r->next) {				//后半部分链表逆序
-		mid = r->next;
-		r->next = mid->next;
-		mid->next = l->next;
-		l->next = mid;
-	}
-
-	mid = l;
-	l = head;
-	while (l != mid) {
-		r = mid->next;
-		mid->next = r->next;
-		r->next = l->next;
-		l->next = r;
-		l = r->next;
+ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+	if (not l1 and not l2)
+		return new ListNode(0);
+	else if (not l1)
+		return l2;
+	else if (not l2)
+		return l1;
+	else {
+		int val = l1->val + l2->val;
+		int up = (int)(val / 10);
+		int left = val % 10;
+		ListNode* head = new ListNode(left);
+		ListNode* cur = head;
+		while (l1->next && l2->next) {
+			val = l1->next->val + l2->next->val + up;
+			up = (int)(val / 10);
+			left = val % 10;
+			ListNode* node = new ListNode(left);
+			cur->next = node;
+			cur = node;
+			l1 = l1->next;
+			l2 = l2->next;
+		}
+		ListNode* tail = l1->next ? l1->next : l2->next;
+		while (tail) {
+			val = tail->val + up;
+			up = (int)(val / 10);
+			left = val % 10;
+			ListNode* node = new ListNode(left);
+			cur->next = node;
+			cur = node;
+			tail = tail->next;
+		}
+		return head;
 	}
 }
 
 int main()
 {
-	ListNode l1(8);
-	ListNode l2(7, &l1);
-	ListNode l3(6, &l2);
-	ListNode l4(5, &l3);
-	ListNode l5(4, &l4);
-	ListNode l6(3, &l5);
-	ListNode l7(2, &l6);
-	ListNode l8(1, &l7);
+	ListNode l1(3);
+	ListNode l2(4, &l1);
+	ListNode l3(2, &l2);
 
-	reorderList(&l8);
+	ListNode l4(4);
+	ListNode l5(6, &l4);
+	ListNode l6(5, &l5);
+	ListNode l7(9, &l6);
 
-	ListNode* cur = &l8;
+	//ListNode l7(2, &l6);
+	//ListNode l8(1, &l7);
+
+	ListNode* cur = addTwoNumbers(&l3, &l7);
 	while (cur) {
 		cout << cur->val << endl;
 		cur = cur->next;
