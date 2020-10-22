@@ -2,38 +2,33 @@
 //
 
 #include "leetcode.h"
+#include <vector>
 
 using namespace std;
 
-bool isLongPressedName(string name, string typed) {
-	if (name.length() > typed.length())
-		return false;
-	int len = name.length();
-	int i = 0, j = 0;
-	while (i < len ) {
-		if (name[i] == typed[j]) {
-			int repeat = 0;
-			while (name[i] == name[i + ++repeat]);
-			int r2 = 0;
-			while (typed[j] == typed[j + ++r2]);
-			if (r2 < repeat)
-				return false;
-			i += repeat;
-			j += r2;
-		}
-		else {
-			return false;
+vector<int> partitionLabels(string S) {
+	int last[26];
+	int length = S.size();
+	for (int i = 0; i < length; i++) {
+		last[S[i] - 'a'] = i;
+	}
+	vector<int> partition;
+	int start = 0, end = 0;
+	for (int i = 0; i < length; i++) {
+		end = max(end, last[S[i] - 'a']);
+		if (i == end) {
+			partition.push_back(end - start + 1);
+			start = end + 1;
 		}
 	}
-	if (j < typed.length())
-		return false;
-	else
-		return true;
+	return partition;
 }
 
 int main()
 {
-	cout << isLongPressedName("saeed", "ssaaedd");
+	for (int al : partitionLabels("ababcbacadefegdehijhklij")) {
+		cout << al << endl;
+	}
 
 	//ListNode l1(3);
 	//ListNode l2(4, &l1);
