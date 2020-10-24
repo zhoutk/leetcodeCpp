@@ -27,7 +27,7 @@ int videoStitching(vector<vector<int>>& clips, int T) {
 	}
 	return ret;
 
-	//std::sort(clips.begin(), clips.end());//先排序，以方便遍历   
+	//std::sort(clips.begin(), clips.end());//先排序，以方便遍历
 	//int size = clips.size();
 	//if (clips[0][0] != 0) return -1;//第一个片段不是 0  开始
 	//int res = 0;
