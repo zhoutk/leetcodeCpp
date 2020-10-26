@@ -3,27 +3,24 @@
 
 #include "leetcode.h"
 #include <vector>
-#include <algorithm>
 
 using namespace std;
 
 vector<int> smallerNumbersThanCurrent(vector<int>& nums) {
-	vector<pair<int, int>> data;
-	int n = nums.size();
-	for (int i = 0; i < n; i++) {
-		data.emplace_back(nums[i], i);
-	}
-	sort(data.begin(), data.end());
+	vector<int> rs;
 
-	vector<int> ret(n, 0);
-	int prev = -1;
-	for (int i = 0; i < n; i++) {		//第一个记录下来，然后元素变化了，才需要变化。
-		if (prev == -1 || data[i].first != data[i - 1].first) {
-			prev = i;
+	for (int al : nums)
+	{
+		int ct = 0;
+		for (int bl : nums) {
+			if (al > bl) {
+				ct++;
+			}
 		}
-		ret[data[i].second] = prev;
+		rs.push_back(ct);
 	}
-	return ret;
+	
+	return rs;
 }
 
 int main()
