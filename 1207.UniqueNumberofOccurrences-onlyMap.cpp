@@ -5,20 +5,22 @@
 #include <vector>
 #include <algorithm>
 #include <unordered_map>
-#include <unordered_set>
 
 using namespace std;
 
 bool uniqueOccurrences(vector<int>& arr) {
-	unordered_map<int, int> occur;
-	for (const auto& x : arr) {
-		occur[x]++;
+	unordered_map<int, int> cts;
+	unordered_map<int, int> rs;
+	for (auto al : arr)
+	{
+		cts[al] += 1;
 	}
-	unordered_set<int> times;
-	for (const auto& x : occur) {
-		times.insert(x.second);
+	for (auto ct : cts) {
+		rs[ct.second] += 1;
+		if (rs[ct.second] > 1)
+			return false;
 	}
-	return times.size() == occur.size();
+	return true;
 }
 
 int main()
