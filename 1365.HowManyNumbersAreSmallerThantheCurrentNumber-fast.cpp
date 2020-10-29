@@ -3,38 +3,36 @@
 
 #include "leetcode.h"
 #include <vector>
-#include <algorithm>
-#include <unordered_map>
-#include <unordered_set>
 
 using namespace std;
 
-bool uniqueOccurrences(vector<int>& arr) {
-	unordered_map<int, int> occur;
-	for (const auto& x : arr) {
-		occur[x]++;
+vector<int> smallerNumbersThanCurrent(vector<int>& nums) {
+	vector<int> rs;
+
+	for (int al : nums)
+	{
+		int ct = 0;
+		for (int bl : nums) {
+			if (al > bl) {
+				ct++;
+			}
+		}
+		rs.push_back(ct);
 	}
-	unordered_set<int> times;
-	for (const auto& x : occur) {
-		times.insert(x.second);
-	}
-	return times.size() == occur.size();
+	
+	return rs;
 }
 
 int main()
 {
 	vector<int> nums;
+	nums.push_back(8);
 	nums.push_back(1);
 	nums.push_back(2);
 	nums.push_back(2);
-	nums.push_back(1);
-	nums.push_back(1);
 	nums.push_back(3);
-
-	cout << uniqueOccurrences(nums);
-
-	//for(int al : smallerNumbersThanCurrent(nums))
-	//	cout << al;
+	for(int al : smallerNumbersThanCurrent(nums))
+		cout << al;
 
 	//for (int al : partitionLabels("ababcbacadefegdehijhklij")) 
 	//{

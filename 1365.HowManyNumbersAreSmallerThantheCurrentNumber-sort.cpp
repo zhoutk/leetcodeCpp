@@ -4,37 +4,38 @@
 #include "leetcode.h"
 #include <vector>
 #include <algorithm>
-#include <unordered_map>
-#include <unordered_set>
 
 using namespace std;
 
-bool uniqueOccurrences(vector<int>& arr) {
-	unordered_map<int, int> occur;
-	for (const auto& x : arr) {
-		occur[x]++;
+vector<int> smallerNumbersThanCurrent(vector<int>& nums) {
+	vector<pair<int, int>> data;
+	int n = nums.size();
+	for (int i = 0; i < n; i++) {
+		data.emplace_back(nums[i], i);
 	}
-	unordered_set<int> times;
-	for (const auto& x : occur) {
-		times.insert(x.second);
+	sort(data.begin(), data.end());
+
+	vector<int> ret(n, 0);
+	int prev = -1;
+	for (int i = 0; i < n; i++) {		//第一个记录下来，然后元素变化了，才需要变化。
+		if (prev == -1 || data[i].first != data[i - 1].first) {
+			prev = i;
+		}
+		ret[data[i].second] = prev;
 	}
-	return times.size() == occur.size();
+	return ret;
 }
 
 int main()
 {
 	vector<int> nums;
+	nums.push_back(8);
 	nums.push_back(1);
 	nums.push_back(2);
 	nums.push_back(2);
-	nums.push_back(1);
-	nums.push_back(1);
 	nums.push_back(3);
-
-	cout << uniqueOccurrences(nums);
-
-	//for(int al : smallerNumbersThanCurrent(nums))
-	//	cout << al;
+	for(int al : smallerNumbersThanCurrent(nums))
+		cout << al;
 
 	//for (int al : partitionLabels("ababcbacadefegdehijhklij")) 
 	//{
